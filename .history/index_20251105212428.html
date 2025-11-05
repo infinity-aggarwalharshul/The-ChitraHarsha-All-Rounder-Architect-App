@@ -1,0 +1,977 @@
+<!DOCTYPE html> 
+<!-- cSpell:words Vāstu Shilpa -->
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChitraHarsha VāstuShilpa - AI Architecture Platform</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        /* Inter font family */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* Dark background */
+            color: #d1d5db; /* Light text */
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1f2937;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4b5563;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6b7280;
+        }
+        /* Glowing effects */
+        .glow-shadow {
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5), 0 0 5px rgba(59, 130, 246, 0.3);
+        }
+        .sidebar-icon {
+            stroke-width: 1.5;
+        }
+        .content-page {
+            display: none; /* Hide all pages by default */
+        }
+        .content-page.active {
+            display: block; /* Show active page */
+        }
+        /* Input styles */
+        .dark-input {
+            background-color: #1f2937;
+            border: 1px solid #374151;
+            color: #d1d5db;
+            border-radius: 0.5rem; /* rounded-lg */
+            padding: 0.75rem 1rem; /* p-3 */
+            width: 100%;
+        }
+        .dark-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+        }
+        .dark-btn {
+            background-color: #3b82f6;
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .dark-btn:hover {
+            background-color: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+        .dark-btn-secondary {
+            background-color: #374151;
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s;
+        }
+        .dark-btn-secondary:hover {
+            background-color: #4b5563;
+        }
+        /* Card styles */
+        .card {
+            background-color: #1f2937;
+            border-radius: 0.75rem; /* rounded-xl */
+            border: 1px solid #374151;
+            padding: 1.5rem; /* p-6 */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Added for live currency ticker */
+        .ticker-up {
+            color: #22c55e; /* green-500 */
+        }
+        .ticker-down {
+            color: #ef4444; /* red-500 */
+        }
+    </style>
+</head>
+<body class="flex w-full h-screen overflow-hidden">
+
+    <!-- Sidebar Navigation -->
+    <aside class="w-20 lg:w-64 bg-gray-900 border-r border-gray-700 flex flex-col">
+        <!-- Logo -->
+        <div class="h-20 flex items-center justify-center lg:justify-start lg:pl-6 border-b border-gray-700">
+            <div class="flex items-center">
+                <svg class="h-8 w-8 text-blue-500 glow-shadow" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 14 4-4"></path><path d="M3.34 19a10 10 0 1 1 17.32 0"></path></svg>
+                <span class="text-xl font-bold ml-3 hidden lg:block">VāstuShilpa</span>
+            </div>
+        </div>
+
+        <!-- Nav Links -->
+        <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
+            <a href="#" class="nav-link active flex items-center p-3 rounded-lg text-gray-300 bg-gray-700" onclick="changePage('dashboard')">
+                <i data-lucide="layout-dashboard" class="sidebar-icon w-6 h-6"></i>
+                <span class="ml-4 font-medium hidden lg:block">Dashboard</span>
+            </a>
+            <!-- NEW: About Page Link -->
+            <a href="#" class="nav-link flex items-center p-3 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-gray-200" onclick="changePage('about')">
+                <i data-lucide="info" class="sidebar-icon w-6 h-6"></i>
+                <span class="ml-4 font-medium hidden lg:block">About Us</span>
+            </a>
+            <a href="#" class="nav-link flex items-center p-3 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-gray-200" onclick="changePage('design-studio')">
+                <i data-lucide="drafting-compass" class="sidebar-icon w-6 h-6"></i>
+                <span class="ml-4 font-medium hidden lg:block">AI Design Studio</span>
+            </a>
+            <a href="#" class="nav-link flex items-center p-3 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-gray-200" onclick="changePage('compliance-ai')">
+                <i data-lucide="shield-check" class="sidebar-icon w-6 h-6"></i>
+                <span class="ml-4 font-medium hidden lg:block">Compliance AI</span>
+            </a>
+            <a href="#" class="nav-link flex items-center p-3 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-gray-200" onclick="changePage('project-management')">
+                <i data-lucide="briefcase" class="sidebar-icon w-6 h-6"></i>
+                <span class="ml-4 font-medium hidden lg:block">Project Management</span>
+            </a>
+            <a href="#" class="nav-link flex items-center p-3 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-gray-200" onclick="changePage('finance')">
+                <i data-lucide="dollar-sign" class="sidebar-icon w-6 h-6"></i>
+                <span class="ml-4 font-medium hidden lg:block">Finance & Payments</span>
+            </a>
+            <a href="#" class="nav-link flex items-center p-3 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-gray-200" onclick="changePage('secure-vault')">
+                <i data-lucide="lock" class="sidebar-icon w-6 h-6"></i>
+                <span class="ml-4 font-medium hidden lg:block">Secure Vault</span>
+            </a>
+            <a href="#" class="nav-link flex items-center p-3 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-gray-200" onclick="changePage('settings')">
+                <i data-lucide="user" class="sidebar-icon w-6 h-6"></i>
+                <span class="ml-4 font-medium hidden lg:block">Profile & Registration</span>
+            </a>
+            
+            <!-- NEW: Resources Section -->
+            <div class="pt-4 mt-4 border-t border-gray-700">
+                <span class="px-3 text-xs font-semibold uppercase text-gray-500 hidden lg:block">Resources</span>
+                <div class="space-y-2 mt-2">
+                    <a href="#" class="nav-link flex items-center p-3 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-gray-200" onclick="changePage('blogs')">
+                        <i data-lucide="file-text" class="sidebar-icon w-6 h-6"></i>
+                        <span class="ml-4 font-medium hidden lg:block">Blogs</span>
+                    </a>
+                    <a href="#" class="nav-link flex items-center p-3 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-gray-200" onclick="changePage('faqs')">
+                        <i data-lucide="help-circle" class="sidebar-icon w-6 h-6"></i>
+                        <span class="ml-4 font-medium hidden lg:block">FAQs</span>
+                    </a>
+                    <a href="#" class="nav-link flex items-center p-3 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-gray-200" onclick="changePage('contact')">
+                        <i data-lucide="mail" class="sidebar-icon w-6 h-6"></i>
+                        <span class="ml-4 font-medium hidden lg:block">Get in Touch</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Footer -->
+        <div class="p-4 border-t border-gray-700">
+            <a href="#" class="flex items-center p-3 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-gray-200">
+                <i data-lucide="log-out" class="sidebar-icon w-6 h-6"></i>
+                <span class="ml-4 font-medium hidden lg:block">Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 h-screen flex flex-col">
+        <!-- Top Header -->-- Top Header -->-- Top Header -->
+        <header class="h-20 bg-gray-900 border-b border-gray-700 flex items-center justify-between px-6">
+            <div class="flex items-center">
+                <h1 class="text-2xl font-semibold" id="page-title">Dashboard</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span class="text-sm font-medium px-3 py-1 bg-green-700 text-green-100 rounded-full">🇮🇳 Made in India</span>
+                <button class="p-2 rounded-full hover:bg-gray-800">
+                    <i data-lucide="bell" class="w-6 h-6 text-gray-400"></i>
+                </button>
+                <div class="flex items-center">
+                    <img src="https://placehold.co/40x40/4b5563/e0e0e0?text=VPK" alt="User Avatar" class="w-10 h-10 rounded-full border-2 border-blue-500">
+                    <span class="ml-3 font-medium hidden md:block">VPK Ventures</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Content Area -->
+        <div class="flex-1 p-6 lg:p-10 overflow-y-auto">
+
+            <!-- PAGE: Dashboard -->
+            <div id="page-dashboard" class="content-page active">
+                <h2 class="text-3xl font-bold mb-6">Welcome, ChitraHarsha VPK Ventures</h2>
+                
+                <!-- Quick Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="card">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-gray-400">Active Projects</span>
+                            <i data-lucide="hard-hat" class="w-5 h-5 text-blue-400"></i>
+                        </div>
+                        <div class="text-3xl font-bold mt-2">42</div>
+                    </div>
+                    <div class="card">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-gray-400">Compliance Status</span>
+                            <i data-lucide="shield-check" class="w-5 h-5 text-green-400"></i>
+                        </div>
+                        <div class="text-3xl font-bold mt-2">100% (NBC-2016)</div>
+                    </div>
+                    <div class="card">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-gray-400">ChitraHarsha Coin (CHC)</span>
+                            <i data-lucide="bitcoin" class="w-5 h-5 text-yellow-400"></i>
+                        </div>
+                        <div class="text-3xl font-bold mt-2">$3.14 <span class="text-sm text-green-500">+2.5%</span></div>
+                    </div>
+                </div>
+
+                <!-- Main Modules -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="card lg:col-span-1">
+                        <h3 class="text-xl font-semibold mb-4">Live Interactive Session</h3>
+                        <p class="text-gray-400 mb-4">Engage with our AI assistant, powered by advanced LLMs. Ask anything about your project.</p>
+                        <div class="w-full h-48 bg-gray-900 rounded-lg border border-gray-700 flex items-center justify-center">
+                            <p class="text-gray-500">"Interactive Gemini-like session" loading...</p>
+                        </div>
+                        <button class="dark-btn mt-4 w-full">
+                            <i data-lucide="mic" class="w-5 h-5 mr-2"></i>
+                            Start Live Session
+                        </button>
+                    </div>
+
+                    <div class="card lg:col-span-1">
+                        <h3 class="text-xl font-semibold mb-4">Recent Activity Feed</h3>
+                        <ul class="space-y-4">
+                            <li class="flex items-center">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-green-500 mr-3"></i>
+                                <span class="text-gray-300">'Project K' plans passed NBC 2016 fire-safety check.</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i data-lucide="user-plus" class="w-5 h-5 text-blue-500 mr-3"></i>
+                                <span class="text-gray-300">New user 'A. Sharma' registered for 'Data Scientist' role.</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i data-lucide="alert-triangle" class="w-5 h-5 text-yellow-500 mr-3"></i>
+                                <span class="text-gray-300">RERA Form-1 for 'SkyTower' project is due in 3 days.</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i data-lucide="bar-chart-2" class="w-5 h-5 text-indigo-500 mr-3"></i>
+                                <span class="text-gray-300">CHC Coin value increased by 2.5%.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE: AI Design Studio -->
+            <div id="page-design-studio" class="content-page">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Left Column: Controls -->
+                    <div class="lg:col-span-1 card h-fit">
+                        <h3 class="text-xl font-semibold mb-4">AI Generative Design</h3>
+                        <p class="text-gray-400 mb-4">Use NLP to generate design concepts. Our models run on high-performance compute for rapid results.</p>
+                        
+                        <label class="font-medium text-gray-300 mb-2 block">Design Prompt</label>
+                        <textarea class="dark-input h-32 mb-4" placeholder="e.g., 'A 3-bed, 2-bath eco-friendly home in Mumbai with high natural light, built per NBC guidelines...'"></textarea>
+                        
+                        <label class="font-medium text-gray-300 mb-2 block">Style</label>
+                        <select class="dark-input mb-4">
+                            <option>Modern</option>
+                            <option>Contemporary</option>
+                            <option>Traditional (Vāstu)</option>
+                            <option>Indo-Saracenic</option>
+                        </select>
+                        
+                        <button class="dark-btn w-full mb-4">
+                            <i data-lucide="wand-2" class="w-5 h-5 mr-2"></i>
+                            Generate Designs (3/10)
+                        </button>
+                        
+                        <div class="border-t border-gray-700 pt-4">
+                            <h4 class="text-lg font-semibold mb-3">AI Image Scan</h4>
+                            <p class="text-gray-400 mb-3">Upload an image to identify architectural styles, materials, or find compliance issues.</p>
+                            <button class="dark-btn-secondary w-full">
+                                <i data-lucide="scan-line" class="w-5 h-5 mr-2"></i>
+                                Upload & Scan (like Google Lens)
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Column: Viewer -->
+                    <div class="lg:col-span-2 card">
+                        <h3 class="text-xl font-semibold mb-4">Real-time 3D Model Viewer</h3>
+                        <div class="w-full h-[60vh] bg-gray-900 rounded-lg border border-gray-700 flex flex-col items-center justify-center text-gray-500">
+                            <i data-lucide="cube" class="w-24 h-24"></i>
+                            <p class="mt-4 text-lg">3D Model Placeholder</p>
+                            <p class="text-sm">Quantum Supercomputer Render simulation</p>
+                        </div>
+                        <div class="flex justify-center space-x-4 mt-4">
+                            <button class="dark-btn-secondary"><i data-lucide="zoom-in" class="w-5 h-5 mr-2"></i> Zoom In</button>
+                            <button class="dark-btn-secondary"><i data-lucide="zoom-out" class="w-5 h-5 mr-2"></i> Zoom Out</button>
+                            <button class="dark-btn-secondary"><i data-lucide="rotate-3d" class="w-5 h-5 mr-2"></i> Rotate</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE: Compliance AI -->
+            <div id="page-compliance-ai" class="content-page">
+                <h3 class="text-3xl font-bold mb-6">AI-Powered Compliance Engine (NLP)</h3>
+                <p class="text-lg text-gray-400 mb-8">
+                    Our AI scans your plans, documents, and 3D models against all relevant Indian Government rules and policies. "Made in India" compliance, guaranteed.
+                </p>
+                
+                <div class="card mb-6">
+                    <label class="font-medium text-gray-300 mb-2 block">Upload Project Plans (PDF, DWG, RVT)</label>
+                    <div class="flex items-center space-x-4">
+                        <input type="file" class="dark-input flex-1">
+                        <button class="dark-btn">
+                            <i data-lucide="file-check" class="w-5 h-5 mr-2"></i>
+                            Analyze Now
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Module 1: NBC 2016 -->
+                    <div class="card border-l-4 border-blue-500">
+                        <h4 class="text-xl font-semibold mb-3">1. National Building Code (NBC) 2016</h4>
+                        <p class="text-gray-400 mb-4">Real-time NLP analysis of your plans against the NBC-2016 guidelines.</p>
+                        <h5 class="font-semibold mb-2">Live Compliance Report:</h5>
+                        <ul class="space-y-2">
+                            <li class="flex items-center text-green-400">
+                                <i data-lucide="check-circle" class="w-5 h-5 mr-2"></i>
+                                <strong>Part 4 (Fire & Life Safety):</strong> PASS
+                            </li>
+                            <li class="flex items-center text-green-400">
+                                <i data-lucide="check-circle" class="w-5 h-5 mr-2"></i>
+                                <strong>Part 3 (Accessibility for PwD):</strong> PASS
+                            </li>
+                            <li class="flex items-center text-yellow-400">
+                                <i data-lucide="alert-triangle" class="w-5 h-5 mr-2"></i>
+                                <strong>Part 11 (Sustainability):</strong> WARNING (Rainwater harvesting capacity is 15% below recommendation)
+                            </li>
+                            <li class="flex items-center text-green-400">
+                                <i data-lucide="check-circle" class="w-5 h-5 mr-2"></i>
+                                <strong>Part 8 (Structural Safety):</strong> PASS
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Module 2: RERA -->
+                    <div class="card border-l-4 border-green-500">
+                        <h4 class="text-xl font-semibold mb-3">2. RERA Act, 2016</h4>
+                        <p class="text-gray-400 mb-4">Auto-generate compliance documents for real estate regulation.</p>
+                        <p class="text-gray-400 mb-4">Our AI verifies 3D scan data against sanctioned plans to auto-calculate completion percentage.</p>
+                        <button class="dark-btn w-full">
+                            <i data-lucide="download" class="w-5 h-5 mr-2"></i>
+                            Generate RERA Form-1 Certificate
+                        </button>
+                    </div>
+                    
+                    <!-- Module 3: COA -->
+                    <div class="card border-l-4 border-indigo-500">
+                        <h4 class="text-xl font-semibold mb-3">3. Council of Architecture (COA)</h4>
+                        <p class="text-gray-400 mb-4">Ensures all registered architects on the project are adhering to the <strong>Architects Act, 1972</strong> and <strong>Professional Conduct Regulations, 1989</strong>.</p>
+                        <div class="flex items-center text-green-400">
+                            <i data-lucide="check-circle" class="w-5 h-5 mr-2"></i>
+                            All project architects are registered and in good standing.
+                        </div>
+                    </div>
+
+                    <!-- Module 4: Other Policies -->
+                    <div class="card border-l-4 border-gray-500">
+                        <h4 class="text-xl font-semibold mb-3">4. Local/Model Bye-Laws</h4>
+                        <p class="text-gray-400 mb-4">Cross-references against local <strong>Model Building Bye-Laws (MBBL)</strong> for specific zoning, setbacks, and land-use policies.</p>
+                        <div class="flex items-center text-green-400">
+                            <i data-lucide="check-circle" class="w-5 h-5 mr-2"></i>
+                            All setbacks and FSI calculations are compliant.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE: Project Management -->
+            <div id="page-project-management" class="content-page">
+                <h3 class="text-3xl font-bold mb-6">VPK Ventures - Admin & HR Portal</h3>
+                <p class="text-lg text-gray-400 mb-8">
+                    Manage your entire organization, from departments to budgets, based on the data provided in your prototype plan.
+                </p>
+
+                <div class="card">
+                    <h4 class="text-xl font-semibold mb-4">Department & Budget Overview (Monthly)</h4>
+                    <p class="text-gray-400 mb-4">Data is pulled live from the VPK Ventures Cloud Database (Google Cloud & BigQuery).</p>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-700">
+                            <thead class="bg-gray-800">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Department</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Employees</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Junior</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Senior</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Head</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Total Monthly Budget</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-gray-900 divide-y divide-gray-700">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-200">Finance</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">39</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">13</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">13</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">13</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-400">₹23 Lakh</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-200">Data Scientists</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">39</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">13</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">13</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">13</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-400">₹23 Lakh</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-200">Researchers</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">39</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">13</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">13</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">13</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-400">₹23 Lakh</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-200">Interior Designers</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">13</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">N/A</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">N/A</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">N/A</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-400">₹23 Lakh</td>
+                                </tr>
+                                <tr class="bg-gray-800">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-white">Total (All Depts)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-white">330</td>
+                                    <td class="px-6 py-4" colspan="3"></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-blue-300">₹2.26 Crore (Monthly)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- PAGE: Finance & Payments -->
+            <div id="page-finance" class="content-page">
+                <h3 class="text-3xl font-bold mb-6">Finance & Payments</h3>
+                <p class="text-lg text-gray-400 mb-8">
+                    Manage project fees, subscriptions, and investments via our integrated payment and cryptocurrency platform.
+                </p>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- VPK Pay -->
+                    <div class="card">
+                        <h4 class="text-2xl font-semibold mb-4">The ChitraHarsha VPK Pay</h4>
+                        <p class="text-gray-400 mb-6">Powered by an innovative, secure Indian payment gateway. Handle all INR transactions.</p>
+                        <div class="text-center mb-6">
+                            <img src="https://placehold.co/150x150/1f2937/d1d5db?text=QR+Code" alt="VPK Pay QR Code" class="mx-auto rounded-lg border-4 border-gray-700">
+                        </div>
+                        <button class="dark-btn w-full mb-3">
+                            <i data-lucide="send" class="w-5 h-5 mr-2"></i>
+                            Pay via UPI
+                        </button>
+                        <button class="dark-btn-secondary w-full">
+                            <i data-lucide="arrow-down-circle" class="w-5 h-5 mr-2"></i>
+                            Receive Payment
+                        </button>
+                    </div>
+
+                    <!-- CHC Crypto -->
+                    <div class="card">
+                        <h4 class="text-2xl font-semibold mb-4">ChitraHarsha Coin (CHC)</h4>
+                        <p class="text-gray-400 mb-6">Your internal cryptocurrency for platform-exclusive transactions, investments, and rewards. (Data via Binance API).</p>
+                        
+                        <div class="card bg-gray-900 mb-6">
+                            <div class="flex justify-between items-center">
+                                <span class="text-lg font-medium text-gray-400">1 CHC =</span>
+                                <span class="text-3xl font-bold text-white">$3.1415</span>
+                            </div>
+                            <div class="text-right text-green-500 font-medium">+0.08 (2.5%) Today</div>
+                        </div>
+
+                        <button class="dark-btn w-full mb-3">
+                            <i data-lucide="arrow-right-left" class="w-5 h-5 mr-2"></i>
+                            Transact with CHC
+                        </button>
+                        <button class="dark-btn-secondary w-full">
+                            <i data-lucide="bar-chart" class="w-5 h-5 mr-2"></i>
+                            View Market
+                        </button>
+                    </div>
+                </div>
+
+                <!-- NEW: Live Currency Monitoring -->
+                <div class="card mt-6">
+                    <h4 class="text-2xl font-semibold mb-4">Live Currency Monitoring</h4>
+                    <p class="text-gray-400 mb-6">Live tracking for project budgets and international payments.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="card bg-gray-900 p-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-lg font-bold">USD / INR</span>
+                                <span class="px-2 py-0.5 bg-blue-700 text-blue-100 rounded text-xs font-medium">LIVE</span>
+                            </div>
+                            <div class="text-3xl font-bold">83.45</div>
+                            <div class="ticker-up font-medium text-sm">+0.02 (0.02%)</div>
+                        </div>
+                        <div class="card bg-gray-900 p-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-lg font-bold">EUR / INR</span>
+                                <span class="px-2 py-0.5 bg-blue-700 text-blue-100 rounded text-xs font-medium">LIVE</span>
+                            </div>
+                            <div class="text-3xl font-bold">90.21</div>
+                            <div class="ticker-down font-medium text-sm">-0.05 (0.06%)</div>
+                        </div>
+                        <div class="card bg-gray-900 p-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-lg font-bold">CHC / INR</span>
+                                <span class="px-2 py-0.5 bg-yellow-700 text-yellow-100 rounded text-xs font-medium">INTERNAL</span>
+                            </div>
+                            <div class="text-3xl font-bold">262.11</div>
+                            <div class="ticker-up font-medium text-sm">+6.39 (2.5%)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Freemium Model -->
+                <div class="card mt-6">
+                    <h4 class="text-2xl font-semibold mb-4">Freemium & Enterprise Plans</h4>
+                    <p class="text-gray-400 mb-6">Select the plan that scales with your needs.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="card border border-gray-600">
+                            <h5 class="text-xl font-bold">Free</h5>
+                            <p class="text-gray-400">Basic 2D/3D Viewing, 1 Project</p>
+                            <div class="text-2xl font-bold my-4">₹0 <span class="text-sm font-normal">/ mo</span></div>
+                            <button class="dark-btn-secondary w-full">Current Plan</button>
+                        </div>
+                        <div class="card border-2 border-blue-500 glow-shadow">
+                            <h5 class="text-xl font-bold">Professional</h5>
+                            <p class="text-gray-400">AI Design Studio, Basic Compliance</p>
+                            <div class="text-2xl font-bold my-4">₹15,000 <span class="text-sm font-normal">/ mo</span></div>
+                            <button class="dark-btn w-full">Upgrade</button>
+                        </div>
+                        <div class="card border border-gray-600">
+                            <h5 class="text-xl font-bold">Enterprise</h5>
+                            <p class="text-gray-400">Full AI Suite, Admin Portal, Quantum Security</p>
+                            <div class="text-2xl font-bold my-4">Contact Us</div>
+                            <button class="dark-btn-secondary w-full">Get Quote</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE: Secure Vault -->
+            <div id="page-secure-vault" class="content-page">
+                <div class="max-w-3xl mx-auto text-center">
+                    <i data-lucide="shield-check" class="w-24 h-24 mx-auto text-green-500 mb-6 glow-shadow"></i>
+                    <h3 class="text-4xl font-bold mb-6">Quantum-Encrypted Secure Vault</h3>
+                    <p class="text-lg text-gray-400 mb-8">
+                        Your data is secured with post-quantum cryptography, stored on a decentralized blockchain ledger, and hosted on a secure, Indian Government-approved cloud infrastructure.
+                    </pre>
+                    <div class="card text-left">
+                        <h5 class="font-semibold mb-3 text-lg">Security Status:</h5>
+                        <ul class="space-y-3">
+                            <li class="flex items-center text-green-400">
+                                <i data-lucide="check-circle" class="w-5 h-5 mr-3"></i>
+                                <span><strong>Blockchain Ledger:</strong> Synchronized & Immutable</span>
+                            </li>
+                            <li class="flex items-center text-green-400">
+                                <i data-lucide="check-circle" class="w-5 h-5 mr-3"></i>
+                                <span><strong>Encryption:</strong> Post-Quantum (PQC) Active</span>
+                            </li>
+                            <li class="flex items-center text-green-400">
+                                <i data-lucide="check-circle" class="w-5 h-5 mr-3"></i>
+                                <span><strong>Dark Web Monitoring:</strong> Active (0 Threats Found)</span>
+                            </li>
+                            <li class="flex items-center text-green-400">
+                                <i data-lucide="check-circle" class="w-5 h-5 mr-3"></i>
+                                <span><strong>Malware/Phishing Scan:</strong> Active (All Clear)</span>
+                            </li>
+                            <li class="flex items-center text-green-400">
+                                <i data-lucide="check-circle" class="w-5 h-5 mr-3"></i>
+                                <span><strong>Data Storage:</strong> Indian Sovereign Cloud (Compliant)</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- PAGE: Settings & Registration -->
+            <div id="page-settings" class="content-page">
+                <h3 class="text-3xl font-bold mb-6">New User Registration</h3>
+                <p class="text-lg text-gray-400 mb-8">
+                    This form is based on the new user registration flow from your prototype document.
+                </p>
+                
+                <div class="card max-w-4xl mx-auto">
+                    <form action="#" method="POST">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Column 1 -->
+                            <div>
+                                <h4 class="text-lg font-semibold mb-4">Login Credentials</h4>
+                                <div class="mb-4">
+                                    <label class="font-medium text-gray-300 mb-2 block">Username (Email/Mobile No.)</label>
+                                    <input type="text" class="dark-input" placeholder="user@vpk.com">
+                                </div>
+                                <div class="mb-4">
+                                    <label class="font-medium text-gray-300 mb-2 block">Create Password (min 8 chars)</label>
+                                    <input type="password" class="dark-input">
+                                </div>
+                                <div class="flex space-x-4 mb-6">
+                                    <button type="button" class="dark-btn-secondary flex-1">
+                                        <i data-lucide="mail" class="w-5 h-5 mr-2"></i> Verify OTP
+                                    </button>
+                                    <button type="button" class="dark-btn-secondary flex-1">
+                                        <i data-lucide="key" class="w-5 h-5 mr-2"></i> Setup Passkey
+                                    </button>
+                                </div>
+
+                                <h4 class="text-lg font-semibold mb-4">Personal Information</h4>
+                                <div class="mb-4">
+                                    <label class="font-medium text-gray-300 mb-2 block">Address / Street</label>
+                                    <input type="text" class="dark-input">
+                                </div>
+                                <div class="grid grid-cols-2 gap-4 mb-4">
+                                    <input type="text" class="dark-input" placeholder="City">
+                                    <input type="text" class="dark-input" placeholder="State">
+                                </div>
+                                <div class="grid grid-cols-2 gap-4 mb-4">
+                                    <input type="text" class="dark-input" placeholder="Pin Code">
+                                    <input type="text" class="dark-input" placeholder="Mobile Number">
+                                </div>
+                                <div class="mb-4">
+                                    <label class="font-medium text-gray-300 mb-2 block">Email ID</label>
+                                    <input type="email" class="dark-input">
+                                </div>
+                            </div>
+
+                            <!-- Column 2 -->
+                            <div>
+                                <h4 class="text-lg font-semibold mb-4">Verification (KYC)</h4>
+                                <div class="mb-4">
+                                    <label class="font-medium text-gray-300 mb-2 block">ID Proof (Aadhaar / PAN)</label>
+                                    <input type="text" class="dark-input" placeholder="Enter ID Number">
+                                </div>
+
+                                <h4 class="text-lg font-semibold mb-4 mt-6">Bank Account Details</h4>
+                                <div class="mb-4">
+                                    <label class="font-medium text-gray-300 mb-2 block">Account Number</label>
+                                    <input type="text" class="dark-input">
+                                </div>
+                                <div class="mb-4">
+                                    <label class="font-medium text-gray-300 mb-2 block">Bank Name</label>
+                                    <input type="text" class="dark-input">
+                                </div>
+                                <div class="mb-4">
+                                    <label class="font-medium text-gray-300 mb-2 block">IFSC Code</label>
+                                    <input type="text" class="dark-input">
+                                </div>
+                                
+                                <h4 class="text-lg font-semibold mb-4 mt-6">Job Role Application</h4>
+                                <div class="mb-4">
+                                    <label class="font-medium text-gray-300 mb-2 block">Select Department</label>
+                                    <select class="dark-input">
+                                        <option>Select a role...</option>
+                                        <option>Finance</option>
+                                        <option>Brainstormers</option>
+                                        <option>Data Analysts</option>
+                                        <option>Data Scientists</option>
+                                        <option>Researchers</option>
+                                        <option>Interior Designers</option>
+                                        <option>Transportation</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="border-t border-gray-700 mt-6 pt-6 text-right">
+                            <button type="submit" class="dark-btn">
+                                <i data-lucide="user-plus" class="w-5 h-5 mr-2"></i>
+                                Register & Create Virtual ID
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 
+            ================================================================
+            NEW CONTENT PAGES
+            ================================================================
+            -->
+
+            <!-- PAGE: About Us -->
+            <div id="page-about" class="content-page">
+                <h2 class="text-3xl font-bold mb-6">About ChitraHarsha VāstuShilpa</h2>
+                
+                <div class="card mb-6">
+                    <h3 class="text-2xl font-semibold mb-4">Our Mission</h3>
+                    <p class="text-lg text-gray-400 mb-4">
+                        We are pioneering the future of Indian architecture. Our mission is to seamlessly blend the timeless wisdom of ancient Indian Vāstu Shastra with cutting-edge artificial intelligence, NLP, and high-performance computing. We provide a "Made in India" platform that empowers architects, designers, and builders to create complaint, efficient, and beautiful spaces for a modern India.
+                    </p>
+                    <p class="text-lg text-gray-400">
+                        This platform, envisioned by ChitraHarsha VPK Ventures, is an all-in-one solution, integrating every facet of the architectural lifecycle—from generative design and AI-driven compliance with Indian regulations (like NBC 2016 and RERA) to secure project management and innovative financial systems.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <h3 class="text-2xl font-semibold mb-6">Core Technology Stack</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="card bg-gray-900 p-4">
+                            <i data-lucide="brain-circuit" class="w-10 h-10 text-blue-400 mb-3"></i>
+                            <h4 class="text-lg font-semibold">Advanced AI/ML Models</h4>
+                            <p class="text-gray-400 text-sm">Latest generative models for 3D design, spatial optimization, and problem-solving.</p>
+                        </div>
+                        <div class="card bg-gray-900 p-4">
+                            <i data-lucide="file-check-2" class="w-10 h-10 text-green-400 mb-3"></i>
+                            <h4 class="text-lg font-semibold">Natural Language Processing (NLP)</h4>
+                            <p class="text-gray-400 text-sm">Powers our AI Compliance Engine to read plans and check them against Indian government rulebooks.</p>
+                        </div>
+                        <div class="card bg-gray-900 p-4">
+                            <i data-lucide="cloud" class="w-10 h-10 text-indigo-400 mb-3"></i>
+                            <h4 class="text-lg font-semibold">Sovereign Cloud Database</h4>
+                            <p class="text-gray-400 text-sm">Secure, high-speed data storage on Indian Government-approved cloud infrastructure (Google Cloud / BigQuery).</p>
+                        </div>
+                        <div class="card bg-gray-900 p-4">
+                            <i data-lucide="shield-check" class="w-10 h-10 text-teal-400 mb-3"></i>
+                            <h4 class="text-lg font-semibold">Quantum-Level Encryption</h4>
+                            <p class="text-gray-400 text-sm">Securing all user data and project files with next-generation post-quantum cryptography.</p>
+                        </div>
+                        <div class="card bg-gray-900 p-4">
+                            <i data-lucide="link" class="w-10 h-10 text-yellow-400 mb-3"></i>
+                            <h4 class="text-lg font-semibold">Blockchain Management</h4>
+                            <p class="text-gray-400 text-sm">Ensuring data integrity, immutable logs, and secure transactions with our CHC coin.</p>
+                        </div>
+                        <div class="card bg-gray-900 p-4">
+                            <i data-lucide="globe" class="w-10 h-10 text-rose-400 mb-3"></i>
+                            <h4 class="text-lg font-semibold">Real-Time APIs</h4>
+                            <p class="text-gray-400 text-sm">Live currency/crypto tracking (Binance) and multi-language transcript support.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE: Blogs -->
+            <div id="page-blogs" class="content-page">
+                <h2 class="text-3xl font-bold mb-6">VāstuShilpa Insights Blog</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="card">
+                        <img src="https://placehold.co/600x400/1f2937/3b82f6?text=AI+in+Vāstu" class="rounded-lg mb-4" alt="Blog Post Image">
+                        <h3 class="text-xl font-semibold mb-2">AI in Vāstu Shastra: Bridging Ancient Science and Modern Tech</h3>
+                        <p class="text-gray-400 mb-4">Explore how our AI models are trained to understand and apply ancient Vāstu principles in generative design...</p>
+                        <button class="dark-btn-secondary w-full">Read More</button>
+                    </div>
+                    <div class="card">
+                        <img src="https://placehold.co/600x400/1f2937/22c55e?text=NBC+Compliance" class="rounded-lg mb-4" alt="Blog Post Image">
+                        <h3 class="text-xl font-semibold mb-2">Navigating NBC 2016 with NLP: Compliance Made Easy</h3>
+                        <p class="text-gray-400 mb-4">A deep dive into our AI Compliance Engine and how it saves projects thousands of hours by automating rule-checking...</p>
+                        <button class="dark-btn-secondary w-full">Read More</button>
+                    </div>
+                    <div class="card">
+                        <img src="https://placehold.co/600x400/1f2937/f97316?text=Eco-Design" class="rounded-lg mb-4" alt="Blog Post Image">
+                        <h3 class="text-xl font-semibold mb-2">The Future of Eco-Friendly Design in India</h3>
+                        <p class="text-gray-400 mb-4">How our platform helps architects simulate and optimize for sustainability, from solar passive design to rainwater harvesting...</p>
+                        <button class="dark-btn-secondary w-full">Read More</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE: FAQs -->
+            <div id="page-faqs" class="content-page">
+                <h2 class="text-3xl font-bold mb-6">Frequently Asked Questions (FAQs)</h2>
+                <div class="card max-w-4xl mx-auto">
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="text-xl font-semibold mb-2">What is ChitraHarsha VāstuShilpa?</h4>
+                            <p class="text-gray-400">It's an all-in-one, "Made in India" web platform for the architecture and construction industry. It combines AI-powered design tools, an automated Indian government compliance engine (for RERA, NBC, etc.), and a full-scale project management and finance suite.</p>
+                        </div>
+                        <div class="border-t border-gray-700 pt-6">
+                            <h4 class="text-xl font-semibold mb-2">How does the AI Compliance Engine work?</h4>
+                            <p class="text-gray-400">Our advanced NLP models have been trained on all major Indian government regulations, including the National Building Code 2016, RERA Act, and local bye-laws. You upload your plans (PDF, DWG, etc.), and our AI scans them in real-time, providing a detailed report of any potential violations or areas for improvement, saving you time and legal risk.</p>
+                        </div>
+                        <div class="border-t border-gray-700 pt-6">
+                            <h4 class="text-xl font-semibold mb-2">Is my project data secure?</h4>
+                            <p class="text-gray-400">Absolutely. We use a multi-layered security approach featuring Post-Quantum Cryptography, decentralized Blockchain ledgers for data integrity, and hosting on a secure, Indian Government-approved sovereign cloud. Our "Secure Vault" also includes active dark web and malware monitoring.</p>
+                        </div>
+                        <div class="border-t border-gray-700 pt-6">
+                            <h4 class="text-xl font-semibold mb-2">What is the ChitraHarsha Coin (CHC)?</h4>
+                            <p class="text-gray-400">CHC is our native cryptocurrency, as specified in the VPK Ventures plan. It can be used for platform-exclusive transactions, rewarding AI-generated designs, investments, and as a secure, fast alternative for project payments. Its value is tracked live against major currencies.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE: Contact -->
+            <div id="page-contact" class="content-page">
+                <h2 class="text-3xl font-bold mb-6">Get in Touch</h2>
+                <div class="card max-w-4xl mx-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4">Send us a Message</h3>
+                            <form action="#" class="space-y-4">
+                                <div>
+                                    <label class="font-medium text-gray-300 mb-2 block">Your Name</label>
+                                    <input type="text" class="dark-input">
+                                </div>
+                                <div>
+                                    <label class="font-medium text-gray-300 mb-2 block">Your Email</label>
+                                    <input type="email" class="dark-input">
+                                </div>
+                                <div>
+                                    <label class="font-medium text-gray-300 mb-2 block">Subject</label>
+                                    <input type="text" class="dark-input">
+                                </div>
+                                <div>
+                                    <label class="font-medium text-gray-300 mb-2 block">Message</label>
+                                    <textarea class="dark-input h-32"></textarea>
+                                </div>
+                                <button type="submit" class="dark-btn w-full">Send Message</button>
+                            </form>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-4">Contact Information</h3>
+                            <p class="text-gray-400 mb-6">Feel free to reach out to us through any of the following methods.</p>
+                            <ul class="space-y-4">
+                                <li class="flex items-center">
+                                    <i data-lucide="map-pin" class="w-5 h-5 text-blue-400 mr-3"></i>
+                                    <span>VPK Ventures HQ, New Delhi, India</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <i data-lucide="phone" class="w-5 h-5 text-blue-400 mr-3"></i>
+                                    <span>+91 011 1234 5678</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <i data-lucide="mail" class="w-5 h-5 text-blue-400 mr-3"></i>
+                                    <span>info@vpkventures.com</span>
+                                </li>
+                            </ul>
+                            <div class="w-full h-48 bg-gray-900 rounded-lg mt-6 border border-gray-700 flex items-center justify-center text-gray-500">
+                                Map Placeholder
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE: Privacy Policy -->
+            <div id="page-privacy" class="content-page">
+                <h2 class="text-3xl font-bold mb-6">Privacy Policy</h2>
+                <div class="card max-w-4xl mx-auto">
+                    <p class="text-gray-400 mb-4">Last Updated: [Date]</p>
+                    <p class="text-gray-400 mb-6">ChitraHarsha VPK Ventures ("us", "we", or "our") operates the VāstuShilpa platform. This page informs you of our policies regarding the collection, use, and disclosure of personal data when you use our Service and the choices you have associated with that data.</p>
+                    
+                    <h4 class="text-xl font-semibold mb-3">1. Data Collection and Use</h4>
+                    <p class="text-gray-400 mb-4">We collect several different types of information for various purposes to provide and improve our Service to you. This includes, but is not limited to: Email Address, Personal Identification Information (Name, Address, Aadhaar/PAN for KYC), Bank Details (for payments), and Project Files (DWG, RVT, PDF).</p>
+
+                    <h4 class="text-xl font-semibold mb-3">2. Data Security</h4>
+                    <p class="text-gray-400 mb-4">The security of your data is paramount. We use Post-Quantum Cryptography, store data on secure Indian sovereign cloud servers, and utilize Blockchain ledgers for data integrity. All data is encrypted at rest and in transit.</p>
+
+                    <h4 class="text-xl font-semibold mb-3">3. Compliance with Indian Law</h4>
+                    <p class="text-gray-400 mb-4">We adhere strictly to all Indian data protection laws, including the Digital Personal Data Protection (DPDP) Act. Your data will not be shared with third parties without your explicit consent, except as required by law.</p>
+
+                    <h4 class="text-xl font-semibold mb-3">4. Dark Web & Malware Monitoring</h4>
+                    <p class="text-gray-400 mb-4">Our systems actively monitor for threats, including dark web monitoring for compromised credentials and malware/phishing scanning of all user-uploaded files to protect the integrity of our platform and your projects.</p>
+                </div>
+            </div>
+
+            <!-- PAGE: Terms & Conditions -->
+            <div id="page-terms" class="content-page">
+                <h2 class="text-3xl font-bold mb-6">Terms & Conditions</h2>
+                <div class="card max-w-4xl mx-auto">
+                    <p class="text-gray-400 mb-6">Please read these Terms and Conditions ("Terms") carefully before using the ChitraHarsha VāstuShilpa platform (the "Service") operated by ChitraHarsha VPK Ventures.</p>
+
+                    <h4 class="text-xl font-semibold mb-3">1. Acceptance of Terms</h4>
+                    <p class="text-gray-400 mb-4">By accessing or using the Service, you agree to be bound by these Terms. If you disagree with any part of the terms, you may not access the Service. This Service is intended for commercial use.</p>
+
+                    <h4 class="text-xl font-semibold mb-3">2. AI-Powered Services</h4>
+                    <p class="text-gray-400 mb-4">The Service provides AI-generated designs and compliance checks. While we strive for accuracy, these tools are for assistance and do not replace the final professional judgment of a registered architect or engineer. The user is ultimately responsible for ensuring all designs are safe and compliant with all applicable laws, including the National Building Code 2016 and RERA Act.</p>
+                    
+                    <h4 class="text-xl font-semibold mb-3">3. Intellectual Property</h4>
+                    <p class="text-gray-400 mb-4">You (the user) retain all intellectual property rights to the project data and plans you upload. We claim no ownership over your designs. By using the AI generative features, you are granted a full commercial license to use the AI-generated output for your projects.</p>
+
+                    <h4 class="text-xl font-semibold mb-3">4. User Conduct</h4>
+                    <p class="text-gray-400 mb-4">You agree not to use the Service for any unlawful purpose. You are responsible for all activities conducted under your account, including maintaining the security of your password and Passkey.</p>
+                    
+                    <h4 class="text-xl font-semibold mb-3">5. Governing Law</h4>
+                    <p class="text-gray-400 mb-4">These Terms shall be governed and construed in accordance with the laws of India, without regard to its conflict of law provisions. All disputes shall be subject to the exclusive jurisdiction of the courts in New Delhi, India.</p>
+                </div>
+            </div>
+
+
+        </div> <!-- /end Page Content Area -->
+
+        <!-- Footer Bar -->
+        <footer class="h-16 bg-gray-900 border-t border-gray-700 flex items-center justify-center px-6">
+            <div class="flex space-x-6 text-sm text-gray-400">
+                <!-- UPDATED Links to use changePage() -->
+                <a href="#" class="hover:text-blue-400" onclick="changePage('about')">About Us</a>
+                <a href="#" class="hover:text-blue-400" onclick="changePage('faqs')">FAQs</a>
+                <a href="#" class="hover:text-blue-400" onclick="changePage('privacy')">Privacy Policy</a>
+                <a href="#" class="hover:text-blue-400" onclick="changePage('terms')">Terms & Conditions</a>
+                <a href="#" class="hover:text-blue-400" onclick="changePage('blogs')">Blogs</a>
+                <a href="#" class="hover:text-blue-400" onclick="changePage('contact')">Get in Touch</a>
+            </div>
+        </footer>
+
+    </main>
+
+    <script>
+        // Page navigation
+        const allPages = document.querySelectorAll('.content-page');
+        const allLinks = document.querySelectorAll('.nav-link');
+        const pageTitle = document.getElementById('page-title');
+
+        function changePage(pageId) {
+            // Hide all pages
+            allPages.forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Deactivate all links
+            allLinks.forEach(link => {
+                link.classList.remove('bg-gray-700', 'text-gray-200');
+                link.classList.add('text-gray-400', 'hover:bg-gray-800');
+            });
+
+            // Show the target page
+            const targetPage = document.getElementById(`page-${pageId}`);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+
+            // Activate the target link
+            const targetLink = document.querySelector(`.nav-link[onclick="changePage('${pageId}')"]`);
+            if (targetLink) {
+                targetLink.classList.add('bg-gray-700', 'text-gray-200');
+                targetLink.classList.remove('text-gray-400', 'hover:bg-gray-800');
+                // Update page title
+                const titleText = targetLink.querySelector('span').textContent;
+                pageTitle.textContent = titleText;
+            }
+        }
+
+        // Wait for the DOM to be fully loaded before running scripts
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Lucide icons
+            lucide.createIcons();
+            
+            // Initialize with dashboard page
+            changePage('dashboard');
+        });
+    </script>
+</body>
+</html>
